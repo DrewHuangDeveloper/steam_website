@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2026 機器人與機關王培訓班 | 招潮蟹老師</title>
+  <style>
+    /* ===== 基礎設定與重置 ===== */
+    :root {
+      --bg-color: #0f172a;
+      --card-bg: rgba(255, 255, 255, 0.05);
+      --card-border: rgba(255, 255, 255, 0.1);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent: #38bdf8;
+      --accent-glow: rgba(56, 189, 248, 0.5);
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    html {
+      scroll-behavior: smooth;
+      font-family: 'PingFang TC', '微軟正黑體', sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      overflow-x: hidden;
+    }
+
+    body { position: relative; }
+
+    /* ===== 背景 Canvas ===== */
+    #bg-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -1;
+      background: linear-gradient(135deg, #0f172a, #1e293b);
+    }
+
+    /* ===== 導覽列 (Sticky Navbar) ===== */
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: rgba(15, 23, 42, 0.8);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--card-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 5%;
+      z-index: 100;
+    }
+    nav .logo { font-size: 1.2rem; font-weight: bold; color: var(--text-main); }
+    nav .links a {
+      color: var(--text-main);
+      text-decoration: none;
+      margin-left: 20px;
+      font-size: 0.95rem;
+      transition: color 0.3s;
+    }
+    nav .links a:hover { color: var(--accent); }
+
+    /* ===== 首屏 Hero Section ===== */
+    .hero {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 0 20px;
+      position: relative;
+    }
+    .hero-badge {
+      background: rgba(56, 189, 248, 0.2);
+      color: var(--accent);
+      padding: 6px 16px;
+      border-radius: 30px;
+      font-size: 0.9rem;
+      margin-bottom: 20px;
+      border: 1px solid var(--accent);
+    }
+    .hero h1 {
+      font-size: 3.5rem;
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 20px;
+      text-shadow: 0 0 20px var(--accent-glow);
+    }
+    .hero p {
+      font-size: 1.2rem;
+      color: var(--text-muted);
+      max-width: 600px;
+      margin-bottom: 40px;
+    }
+    .hero-watermark {
+      position: absolute;
+      font-size: 15vw;
+      font-weight: 900;
+      color: rgba(255, 255, 255, 0.02);
+      z-index: -1;
+      top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none;
+    }
+    .scroll-indicator {
+      position: absolute;
+      bottom: 40px;
+      font-size: 0.8rem;
+      letter-spacing: 2px;
+      animation: bounce 2s infinite;
+      color: var(--text-muted);
+    }
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+      40% { transform: translateY(-10px); }
+      60% { transform: translateY(-5px); }
+    }
+
+    /* ===== 共用區塊與浮水印數字 ===== */
+    section {
+      padding: 100px 5%;
+      max-width: 1200px;
+      margin: 0 auto;
+      position: relative;
+    }
+    .section-number {
+      position: absolute;
+      top: 50px;
+      left: 0;
+      font-size: 8rem;
+      font-weight: 900;
+      color: rgba(255, 255, 255, 0.03);
+      line-height: 1;
+      z-index: -1;
+    }
+    .section-title {
+      font-size: 2.2rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    .section-subtitle {
+      color: var(--accent);
+      font-size: 1rem;
+      margin-bottom: 40px;
+      letter-spacing: 1px;
+    }
+
+    /* ===== 毛玻璃 Bento Box 版面 ===== */
+    .bento-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .bento-item {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 30px;
+      backdrop-filter: blur(10px);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .bento-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+    .bento-item h3 { font-size: 1.4rem; margin-bottom: 15px; color: var(--text-main); }
+    .bento-item p { color: var(--text-muted); line-height: 1.6; }
+    
+    .span-2 { grid-column: span 2; }
+    .span-3 { grid-column: span 3; }
+
+    /* ===== 報名與 CTA ===== */
+    .cta-box {
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.1), rgba(15, 23, 42, 0.8));
+      text-align: center;
+      padding: 50px;
+      border-radius: 20px;
+      border: 1px solid var(--accent);
+    }
+    .btn {
+      display: inline-block;
+      background: var(--accent);
+      color: #0f172a;
+      padding: 12px 30px;
+      border-radius: 30px;
+      font-weight: bold;
+      text-decoration: none;
+      margin-top: 20px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 15px var(--accent-glow);
+    }
+
+    /* ===== 滾動動畫 (Intersection Observer用) ===== */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ===== RWD 手機版調整 ===== */
+    @media (max-width: 768px) {
+      .bento-grid { grid-template-columns: 1fr; }
+      .span-2, .span-3 { grid-column: span 1; }
+      .hero h1 { font-size: 2.5rem; }
+      nav .links { display: none; } /* 簡化手機版導覽 */
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 背景動畫 -->
+  <canvas id="bg-canvas"></canvas>
+
+  <!-- 頂部導覽 -->
+  <nav>
+    <div class="logo">招潮蟹老師 STEAM 基地</div>
+    <div class="links">
+      <a href="#competitions">兩大賽事</a>
+      <a href="#benefits">參賽優勢</a>
+      <a href="#coach">教練介紹</a>
+      <a href="#enroll">培訓報名</a>
+    </div>
+  </nav>
+
+  <!-- 首屏 -->
+  <header class="hero">
+    <div class="hero-watermark">2026</div>
+    <div class="hero-badge">國小中高年級 · 週末實體培訓班</div>
+    <h1 class="fade-in">解鎖孩子的科技天賦<br>迎戰國家級大賽</h1>
+    <p class="fade-in">機關王 × 科教館 R4M 雙引擎培訓。<br>從動手做到解決問題，打造耀眼的專屬學習履歷！</p>
+    <a href="#enroll" class="btn fade-in">查看培訓時段</a>
+    <div class="scroll-indicator">SCROLL ↓</div>
+  </header>
+
+  <!-- 01 賽事介紹 -->
+  <section id="competitions">
+    <div class="section-number">01</div>
+    <div class="section-subtitle">COMPETITIONS</div>
+    <h2 class="section-title fade-in">征戰雙大賽事，驗證真實力</h2>
+    
+    <div class="bento-grid fade-in">
+      <div class="bento-item span-2">
+        <h3>🏆 國立臺灣科學教育館 R4M 任務賽</h3>
+        <p>國家級科學殿堂主辦，含金量極高！這不僅是組裝積木，更是考驗孩子的「即戰力」。比賽結合了精密的硬體機構設計與流暢的程式邏輯控制，真實模擬解決現實科技問題，幫助孩子從零開始建立系統化思維。</p>
+      </div>
+      <div class="bento-item">
+        <h3>⚙️ 智高世界機關王大賽</h3>
+        <p>Greenmech 賽事要求孩子發揮天馬行空的創意，在有限時間內運用智高 1205/1409 系列套件與微型電腦，打造出不可思議的骨牌連動機關！極度考驗跨學科的整合能力與立體空間邏輯。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 參賽優勢 -->
+  <section id="benefits">
+    <div class="section-number">02</div>
+    <div class="section-subtitle">WHY COMPETE?</div>
+    <h2 class="section-title fade-in">為什麼要推孩子上賽場？</h2>
+    
+    <div class="bento-grid fade-in">
+      <div class="bento-item span-2">
+        <h3>✨ 打造亮眼學習履歷，贏在升學起跑點</h3>
+        <p>在面對私立國中招生、或是未來多元入學的甄選時，一張國家級或國際級的參賽證明與獲獎獎狀，勝過千言萬語。這份履歷具體證明了孩子具備頂尖的邏輯運算能力、科技素養，以及願意接受高強度挑戰的積極心態，是升學路上的最強加分利器。</p>
+      </div>
+      <div class="bento-item">
+        <h3>🤝 從自我中心到團隊協作</h3>
+        <p>比賽從來不是一個人的武林。在賽場的高壓下，孩子必須學會與隊友溝通、妥協、分工，這是在一般學校課堂上極難培養的「無形軟實力」。</p>
+      </div>
+      <div class="bento-item span-3">
+        <h3>💡 培養不怕失敗的 Debug 勇氣</h3>
+        <p>賽場上突發狀況是常態（馬達不轉、程式出錯、機構卡住）。我們鼓勵孩子去撞牆，學會冷靜找出問題並除錯 (Debug)。「解決問題的能力」才是AI時代真正帶得走的競爭力。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 教練介紹 -->
+  <section id="coach">
+    <div class="section-number">03</div>
+    <div class="section-subtitle">ABOUT COACH</div>
+    <h2 class="section-title fade-in">業界資歷 × 父親視角，最懂孩子的教練</h2>
+    
+    <div class="bento-grid fade-in">
+      <div class="bento-item span-3">
+        <h3>招潮蟹老師 (蟹蟹老師)</h3>
+        <p style="margin-bottom: 15px;"><strong>從工程師到雙寶爸的溫柔轉身</strong></p>
+        <p>我曾在科技業打滾 10 年，開發過 Unity 遊戲，寫過工廠 PLC 系統，親手操作過工業級機械手臂，並為 友達、群創 等面板大廠與綠能產業執行自動化專案。</p>
+        <p style="margin-top: 15px;">「因為成為了雙胞胎的爸爸，我開始思考：未來的世界，究竟需要什麼樣的孩子？」</p>
+        <p style="margin-top: 15px;">我決定放下工程師的頭銜，轉身投入 STEAM 教育。我把業界最真實的『專案管理』與『工程邏輯』帶入國小課堂，用父親的耐心與同理心，引導孩子在遊戲中學會最硬核的科技知識！</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 報名區塊 -->
+  <section id="enroll">
+    <div class="section-number">04</div>
+    <div class="section-subtitle">JOIN US</div>
+    <h2 class="section-title fade-in">準備好接受挑戰了嗎？</h2>
+    
+    <div class="cta-box fade-in">
+      <h3 style="font-size: 1.8rem; margin-bottom: 10px;">2026 國小競賽週末培訓班</h3>
+      <p style="color: var(--text-muted); margin-bottom: 20px;">新北土城 / 新店基地 ｜ 針對國小 2~6 年級 (推薦 4~6 年級參賽)</p>
+      <div style="background: white; padding: 10px; width: 150px; margin: 0 auto; border-radius: 10px;">
+        <!-- 這裡放你的 Google 表單 QR Code，目前使用 API 動態生成作為範例 -->
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=130x130&data=https://forms.google.com/" alt="報名 QR Code" style="width: 100%; display: block;">
+      </div>
+      <a href="#" class="btn">填寫意願表單</a>
+    </div>
+  </section>
+
+  <script>
+    // ===== 1. 背景星空粒子特效 =====
+    const canvas = document.getElementById('bg-canvas');
+    const ctx = canvas.getContext('2d');
+    
+    let width, height, particles;
+    
+    function initCanvas() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+      particles = [];
+      // 依螢幕大小決定粒子數量
+      const particleCount = Math.floor((width * height) / 15000);
+      
+      for(let i = 0; i < particleCount; i++) {
+        particles.push({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          radius: Math.random() * 1.5 + 0.5,
+          vx: (Math.random() - 0.5) * 0.5,
+          vy: (Math.random() - 0.5) * 0.5,
+          opacity: Math.random() * 0.5 + 0.1
+        });
+      }
+    }
+
+    function drawParticles() {
+      ctx.clearRect(0, 0, width, height);
+      particles.forEach(p => {
+        p.x += p.vx;
+        p.y += p.vy;
+        
+        // 邊界反彈
+        if(p.x < 0 || p.x > width) p.vx *= -1;
+        if(p.y < 0 || p.y > height) p.vy *= -1;
+        
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(56, 189, 248, ${p.opacity})`;
+        ctx.fill();
+      });
+      requestAnimationFrame(drawParticles);
+    }
+    
+    window.addEventListener('resize', initCanvas);
+    initCanvas();
+    drawParticles();
+
+    // ===== 2. 滾動淡入動畫 (Intersection Observer) =====
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.15 });
+
+    document.querySelectorAll('.fade-in').forEach(element => {
+      observer.observe(element);
+    });
+  </script>
+</body>
+</html>
