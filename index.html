@@ -165,21 +165,6 @@
     
     .span-2 { grid-column: span 2; }
 
-    /* 圖片輔助框 */
-    .image-placeholder {
-      width: 100%;
-      height: 200px;
-      background: rgba(0,0,0,0.3);
-      border-radius: 12px;
-      margin-top: 20px;
-      border: 1px dashed rgba(255,255,255,0.2);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      color: rgba(255,255,255,0.3);
-      font-size: 0.9rem;
-    }
-
     /* ===== 滾動動畫 ===== */
     .fade-in {
       opacity: 0;
@@ -229,7 +214,7 @@
         <h3>🤖 國立臺灣科學教育館 R4M 任務賽</h3>
         <p>由國家級最高科學殿堂主辦。這是一場講求「精準與邏輯」的高難度挑戰。孩子必須親手設計機械結構，並撰寫流暢的程式邏輯控制機器人，在賽道上精準執行抓取、避障與任務解鎖。</p>
         <p style="margin-top: 10px;">它真實模擬了現代工業自動化的運作邏輯，從零開始建構孩子的系統化程式思維。</p>
-        <img src="https://encrypted-tbn3.gstatic.com/licensed-image?q=tbn:ANd9GcSV9PrID1teuZcgifknDJwrKjQF54srFCuzgwFjDgSlEniZo-shzZgc065GXWDFa9KQuOo41PkNwfld-V0" alt="學生學習機器人組裝" style="width: 100%; border-radius: 12px; margin-top: 20px;">
+        <img src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="學生學習機器人組裝" style="width: 100%; border-radius: 12px; margin-top: 20px;">
       </div>
       <div class="bento-item">
         <h3>⚙️ 世界機關王大賽 (GreenMech)</h3>
@@ -248,128 +233,4 @@
     
     <div class="bento-grid fade-in">
       <div class="bento-item span-2">
-        <h3>🏆 打造亮眼學習履歷，贏在升學起跑點</h3>
-        <p>在面對「私立國中入學」或是未來的多元特色招生時，一張國家級的參賽證明與獲獎獎狀，勝過千言萬語。這份履歷具體向學校證明：您的孩子已經具備超齡的邏輯運算能力、科技素養，以及願意接受高強度挑戰的積極心態。這是學科成績之外，最強大的加分利器。</p>
-      </div>
-      <div class="bento-item">
-        <h3>💡 培養不怕失敗的「工程師態度」</h3>
-        <p>賽場上突發狀況是常態——馬達不轉、程式跳錯、齒輪卡死。在訓練中，我們不直接給答案，而是鼓勵孩子去「撞牆」，學會冷靜找出問題並進行除錯 (Debug)。認真面對失敗並解決它，這就是工程師的靈魂。</p>
-      </div>
-      <div class="bento-item">
-        <h3>🤝 從自我中心到團隊協作</h3>
-        <p>比賽從來不是一個人的武林。在高壓的準備期間，孩子必須學會與隊友溝通、妥協、分工合作。這種在衝突中尋求共識的經驗，是一般學校課堂上極難培養的「無形軟實力」。</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- 03 教練介紹 -->
-  <section id="coach">
-    <div class="section-number">03</div>
-    <div class="section-subtitle">ABOUT COACH</div>
-    <h2 class="section-title fade-in">業界實戰資歷 × 父親的視角</h2>
-    
-    <div class="bento-grid fade-in">
-      <div class="bento-item span-2">
-        <div style="display: flex; gap: 30px; align-items: flex-start; flex-wrap: wrap;">
-          <div style="flex: 1; min-width: 250px;">
-            <h3>招潮蟹老師 (蟹蟹老師)</h3>
-            <p style="margin-bottom: 15px; color: var(--accent);"><strong>從科技業工程師，到雙寶爸的溫柔轉身</strong></p>
-            <p>我曾在科技業打滾 10 年，擔任自動化設備整合工程師。我寫過工廠的 PLC 控制系統、親手操作過工業級機械手臂，更曾跨國為面板大廠（友達、群創）與綠能產業執行自動化設備建置專案。</p>
-            <p style="margin-top: 15px;">「因為成為了雙胞胎的爸爸，我開始思考：面對被 AI 顛覆的未來，孩子真正需要的是什麼？」</p>
-            <p style="margin-top: 15px;">我決定放下工程師的光環，將業界最真實的「專案管理」與「工程邏輯」降維帶入國小課堂。我希望用父親的耐心，帶領孩子不再只是「玩」積木，而是建立嚴謹的工程思維，在賽場上遇見更強大的自己。</p>
-          </div>
-          <div style="width: 200px; height: 250px; background: rgba(0,0,0,0.3); border-radius: 20px; border: 1px solid var(--card-border); display: flex; justify-content: center; align-items: center; color: rgba(255,255,255,0.3);">
-            【教練照片】
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 留白收尾 -->
-  <div style="height: 100px;"></div>
-
-  <script>
-    // ===== 背景星空與滑鼠連線特效 (維持你喜歡的科技感) =====
-    const canvas = document.getElementById('bg-canvas');
-    const ctx = canvas.getContext('2d');
-    let width, height, particles;
-    const mouse = { x: null, y: null, radius: 150 };
-
-    window.addEventListener('mousemove', e => { mouse.x = e.x; mouse.y = e.y; });
-    window.addEventListener('mouseout', () => { mouse.x = null; mouse.y = null; });
-    
-    function initCanvas() {
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight;
-      particles = [];
-      const particleCount = Math.floor((width * height) / 8000);
-      for(let i = 0; i < particleCount; i++) {
-        particles.push({
-          x: Math.random() * width,
-          y: Math.random() * height,
-          radius: Math.random() * 2 + 1,
-          vx: (Math.random() - 0.5) * 0.8,
-          vy: (Math.random() - 0.5) * 0.8,
-          opacity: Math.random() * 0.5 + 0.3
-        });
-      }
-    }
-
-    function drawParticles() {
-      ctx.clearRect(0, 0, width, height);
-      particles.forEach(p => {
-        p.x += p.vx; p.y += p.vy;
-        if(p.x < 0 || p.x > width) p.vx *= -1;
-        if(p.y < 0 || p.y > height) p.vy *= -1;
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(56, 189, 248, ${p.opacity})`;
-        ctx.fill();
-      });
-
-      for (let i = 0; i < particles.length; i++) {
-        for (let j = i + 1; j < particles.length; j++) {
-          const dx = particles[i].x - particles[j].x;
-          const dy = particles[i].y - particles[j].y;
-          const distance = Math.sqrt(dx * dx + dy * dy);
-          if (distance < 150) {
-            ctx.beginPath();
-            ctx.moveTo(particles[i].x, particles[i].y);
-            ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.strokeStyle = `rgba(56, 189, 248, ${(1 - distance/150) * 0.2})`;
-            ctx.lineWidth = 1;
-            ctx.stroke();
-          }
-        }
-        if (mouse.x != null && mouse.y != null) {
-          const dx = particles[i].x - mouse.x;
-          const dy = particles[i].y - mouse.y;
-          const distance = Math.sqrt(dx * dx + dy * dy);
-          if (distance < mouse.radius) {
-            ctx.beginPath();
-            ctx.moveTo(particles[i].x, particles[i].y);
-            ctx.lineTo(mouse.x, mouse.y);
-            ctx.strokeStyle = `rgba(56, 189, 248, ${(1 - distance/mouse.radius) * 0.4})`;
-            ctx.lineWidth = 1.5;
-            ctx.stroke();
-          }
-        }
-      }
-      requestAnimationFrame(drawParticles);
-    }
-    window.addEventListener('resize', initCanvas);
-    initCanvas(); drawParticles();
-
-    // ===== 滾動淡入動畫 =====
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-        }
-      });
-    }, { threshold: 0.15 });
-    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-  </script>
-</body>
-</html>
+        <h3>🏆 打造亮眼
