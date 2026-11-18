@@ -94,9 +94,32 @@
       font-size: 1.2rem;
       color: var(--text-muted);
       max-width: 650px;
-      margin-bottom: 40px;
+      margin-bottom: 30px;
       line-height: 1.6;
     }
+    
+    /* ===== 按鈕設計 (新加入) ===== */
+    .btn {
+      display: inline-block;
+      background: var(--accent);
+      color: #0f172a;
+      padding: 12px 30px;
+      border-radius: 30px;
+      font-weight: bold;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+      z-index: 10;
+    }
+    .btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 15px var(--accent-glow);
+    }
+    .btn:active {
+      transform: scale(0.95);
+      box-shadow: 0 0 5px var(--accent);
+      background: #0ea5e9;
+    }
+
     .hero-watermark {
       position: absolute;
       font-size: 12vw;
@@ -144,210 +167,4 @@
     /* ===== 毛玻璃 Bento Box 版面 ===== */
     .bento-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 20px;
-    }
-    .bento-item {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 20px;
-      padding: 35px;
-      backdrop-filter: blur(10px);
-      transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
-    }
-    .bento-item:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), 0 0 15px rgba(56, 189, 248, 0.15);
-      border-color: rgba(56, 189, 248, 0.4);
-    }
-    .bento-item h3 { font-size: 1.4rem; margin-bottom: 15px; color: var(--text-main); display: flex; align-items: center; gap: 10px; }
-    .bento-item p { color: var(--text-muted); line-height: 1.7; font-size: 1.05rem; }
-    
-    .span-2 { grid-column: span 2; }
-
-    /* ===== 滾動動畫 ===== */
-    .fade-in {
-      opacity: 0;
-      transform: translateY(30px);
-      transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-    }
-    .fade-in.visible { opacity: 1; transform: translateY(0); }
-
-    /* ===== RWD 手機版 ===== */
-    @media (max-width: 768px) {
-      .bento-grid { grid-template-columns: 1fr; }
-      .span-2 { grid-column: span 1; }
-      .hero h1 { font-size: 2.5rem; }
-      nav .links { display: none; }
-    }
-  </style>
-</head>
-<body>
-
-  <canvas id="bg-canvas"></canvas>
-
-  <nav>
-    <div class="logo">招潮蟹老師 STEAM 基地 <span>吉的堡合作培訓</span></div>
-    <div class="links">
-      <a href="#competitions">指標賽事</a>
-      <a href="#benefits">參賽價值</a>
-      <a href="#coach">認識教練</a>
-    </div>
-  </nav>
-
-  <header class="hero">
-    <div class="hero-watermark">ROBOTICS</div>
-    <div class="hero-badge">國立科教館 R4M 任務賽 × 世界機關王</div>
-    <h1 class="fade-in">在實戰中覺醒，<br>打造帶得走的科技履歷</h1>
-    <p class="fade-in">給孩子一次為目標拚搏的機會！不只是組裝積木，而是培養真實工程師的「解決問題能力」與「受挫復原力」。這將是孩子升學路上最閃耀的證明。</p>
-    <div class="scroll-indicator">SCROLL ↓</div>
-  </header>
-
-  <!-- 01 賽事介紹 -->
-  <section id="competitions">
-    <div class="section-number">01</div>
-    <div class="section-subtitle">THE CHALLENGE</div>
-    <h2 class="section-title fade-in">兩大國家級舞台，驗證真實力</h2>
-    
-    <div class="bento-grid fade-in">
-      <div class="bento-item">
-        <h3>🤖 國立臺灣科學教育館 R4M 任務賽</h3>
-        <p>由國家級最高科學殿堂主辦。這是一場講求「精準與邏輯」的高難度挑戰。孩子必須親手設計機械結構，並撰寫流暢的程式邏輯控制機器人，在賽道上精準執行抓取、避障與任務解鎖。</p>
-        <p style="margin-top: 10px;">它真實模擬了現代工業自動化的運作邏輯，從零開始建構孩子的系統化程式思維。</p>
-        <img src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="學生學習機器人組裝" style="width: 100%; border-radius: 12px; margin-top: 20px;">
-      </div>
-      <div class="bento-item">
-        <h3>⚙️ 世界機關王大賽 (GreenMech)</h3>
-        <p>極度考驗跨學科整合與空間邏輯！比賽要求孩子發揮天馬行空的創意，在有限的桌面與時間內，運用智高積木與微型電腦，結合槓桿、滑輪、齒輪等物理原理，打造出令人驚嘆的骨牌連動機關。</p>
-        <p style="margin-top: 10px;">不只要會寫程式，還要懂物理結構，是展現孩子全方位 STEAM 素養的最佳舞台。</p>
-        <img src="https://www.worldgreenmech.com/images/PhotoShare/2026814951330.jpg" alt="世界機關王大賽" style="width: 100%; border-radius: 12px; margin-top: 20px;" referrerpolicy="no-referrer">
-      </div>
-    </div>
-  </section>
-
-  <!-- 02 參賽優勢 -->
-  <section id="benefits">
-    <div class="section-number">02</div>
-    <div class="section-subtitle">CORE VALUE</div>
-    <h2 class="section-title fade-in">為什麼要推孩子上賽場？</h2>
-    
-    <div class="bento-grid fade-in">
-      <div class="bento-item span-2">
-        <h3>🏆 打造亮眼學習履歷，贏在升學起跑點</h3>
-        <p>在面對「私立國中入學」或是未來的多元特色招生時，一張國家級的參賽證明與獲獎獎狀，勝過千言萬語。這份履歷具體向學校證明：您的孩子已經具備超齡的邏輯運算能力、科技素養，以及願意接受高強度挑戰的積極心態。這是學科成績之外，最強大的加分利器。</p>
-      </div>
-      <div class="bento-item">
-        <h3>💡 培養不怕失敗的「工程師態度」</h3>
-        <p>賽場上突發狀況是常態——馬達不轉、程式跳錯、齒輪卡死。在訓練中，我們不直接給答案，而是鼓勵孩子去「撞牆」，學會冷靜找出問題並進行除錯 (Debug)。認真面對失敗並解決它，這就是工程師的靈魂。</p>
-      </div>
-      <div class="bento-item">
-        <h3>🤝 從自我中心到團隊協作</h3>
-        <p>比賽從來不是一個人的武林。在高壓的準備期間，孩子必須學會與隊友溝通、妥協、分工合作。這種在衝突中尋求共識的經驗，是一般學校課堂上極難培養的「無形軟實力」。</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- 03 教練介紹 -->
-  <section id="coach">
-    <div class="section-number">03</div>
-    <div class="section-subtitle">ABOUT COACH</div>
-    <h2 class="section-title fade-in">業界實戰資歷 × 父親的視角</h2>
-    
-    <div class="bento-grid fade-in">
-      <div class="bento-item span-2">
-        <h3>招潮蟹老師 (蟹蟹老師)</h3>
-        <p style="margin-bottom: 15px; color: var(--accent);"><strong>從科技業工程師，到雙寶爸的溫柔轉身</strong></p>
-        <p>我曾在科技業打滾 10 年，擔任自動化設備整合工程師。我寫過工廠的 PLC 控制系統、親手操作過工業級機械手臂，更曾跨國為面板大廠（友達、群創）與綠能產業執行自動化設備建置專案。</p>
-        <p style="margin-top: 15px;">「因為成為了雙胞胎的爸爸，我開始思考：面對被 AI 顛覆的未來，孩子真正需要的是什麼？」</p>
-        <p style="margin-top: 15px;">我決定放下工程師的光環，將業界最真實的「專案管理」與「工程邏輯」降維帶入國小課堂。我希望用父親的耐心，帶領孩子不再只是「玩」積木，而是建立嚴謹的工程思維，在賽場上遇見更強大的自己。</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- 留白收尾 -->
-  <div style="height: 100px;"></div>
-
-  <script>
-    // ===== 背景星空與滑鼠連線特效 (維持你喜歡的科技感) =====
-    const canvas = document.getElementById('bg-canvas');
-    const ctx = canvas.getContext('2d');
-    let width, height, particles;
-    const mouse = { x: null, y: null, radius: 150 };
-
-    window.addEventListener('mousemove', e => { mouse.x = e.x; mouse.y = e.y; });
-    window.addEventListener('mouseout', () => { mouse.x = null; mouse.y = null; });
-    
-    function initCanvas() {
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight;
-      particles = [];
-      const particleCount = Math.floor((width * height) / 8000);
-      for(let i = 0; i < particleCount; i++) {
-        particles.push({
-          x: Math.random() * width,
-          y: Math.random() * height,
-          radius: Math.random() * 2 + 1,
-          vx: (Math.random() - 0.5) * 0.8,
-          vy: (Math.random() - 0.5) * 0.8,
-          opacity: Math.random() * 0.5 + 0.3
-        });
-      }
-    }
-
-    function drawParticles() {
-      ctx.clearRect(0, 0, width, height);
-      particles.forEach(p => {
-        p.x += p.vx; p.y += p.vy;
-        if(p.x < 0 || p.x > width) p.vx *= -1;
-        if(p.y < 0 || p.y > height) p.vy *= -1;
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(56, 189, 248, ${p.opacity})`;
-        ctx.fill();
-      });
-
-      for (let i = 0; i < particles.length; i++) {
-        for (let j = i + 1; j < particles.length; j++) {
-          const dx = particles[i].x - particles[j].x;
-          const dy = particles[i].y - particles[j].y;
-          const distance = Math.sqrt(dx * dx + dy * dy);
-          if (distance < 150) {
-            ctx.beginPath();
-            ctx.moveTo(particles[i].x, particles[i].y);
-            ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.strokeStyle = `rgba(56, 189, 248, ${(1 - distance/150) * 0.2})`;
-            ctx.lineWidth = 1;
-            ctx.stroke();
-          }
-        }
-        if (mouse.x != null && mouse.y != null) {
-          const dx = particles[i].x - mouse.x;
-          const dy = particles[i].y - mouse.y;
-          const distance = Math.sqrt(dx * dx + dy * dy);
-          if (distance < mouse.radius) {
-            ctx.beginPath();
-            ctx.moveTo(particles[i].x, particles[i].y);
-            ctx.lineTo(mouse.x, mouse.y);
-            ctx.strokeStyle = `rgba(56, 189, 248, ${(1 - distance/mouse.radius) * 0.4})`;
-            ctx.lineWidth = 1.5;
-            ctx.stroke();
-          }
-        }
-      }
-      requestAnimationFrame(drawParticles);
-    }
-    window.addEventListener('resize', initCanvas);
-    initCanvas(); drawParticles();
-
-    // ===== 滾動淡入動畫 =====
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-        }
-      });
-    }, { threshold: 0.15 });
-    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-  </script>
-</body>
-</html>
+      grid-
