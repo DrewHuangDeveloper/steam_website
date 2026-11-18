@@ -331,26 +331,48 @@
 
   <script>
     // ===== 1. 背景星空粒子特效 =====
+    // ===== 背景星空與滑鼠連線粒子特效 =====
     const canvas = document.getElementById('bg-canvas');
     const ctx = canvas.getContext('2d');
     
     let width, height, particles;
     
+    // 紀錄滑鼠當前位置
+    const mouse = {
+      x: null,
+      y: null,
+      radius: 150 // 滑鼠的引力範圍（這個範圍內的粒子會跟滑鼠連線）
+    }
+
+    // 監聽滑鼠移動，更新游標座標
+    window.addEventListener('mousemove', function(event) {
+      mouse.x = event.x;
+      mouse.y = event.y;
+    });
+
+    // 當滑鼠離開視窗時重置，避免連線停留在邊緣
+    window.addEventListener('mouseout', function() {
+      mouse.x = undefined;
+      mouse.y = undefined;
+    });
+    
     function initCanvas() {
       width = canvas.width = window.innerWidth;
       height = canvas.height = window.innerHeight;
       particles = [];
-      // 依螢幕大小決定粒子數量
-      const particleCount = Math.floor((width * height) / 15000);
+      
+      // 增加粒子數量密度，確保點與點之間夠近能連成網狀
+      // 將分母從 15000 降到 8000，數量大約會翻倍
+      const particleCount = Math.floor((width * height) / 8000);
       
       for(let i = 0; i < particleCount; i++) {
         particles.push({
           x: Math.random() * width,
           y: Math.random() * height,
-          radius: Math.random() * 1.5 + 0.5,
-          vx: (Math.random() - 0.5) * 0.5,
-          vy: (Math.random() - 0.5) * 0.5,
-          opacity: Math.random() * 0.5 + 0.1
+          radius: Math.random() * 2 + 1, // 稍微把點變大一點點
+          vx: (Math.random() - 0.5) * 0.8, // 稍微加快漂浮速度
+          vy: (Math.random() - 0.5) * 0.8,
+          opacity: Math.random() * 0.5 + 0.3
         });
       }
     }
@@ -358,12 +380,12 @@
     function drawParticles() {
       ctx.clearRect(0, 0, width, height);
       
-      // 1. 更新並畫出每個漂浮點
+      // 1. 更新並畫出每個點
       particles.forEach(p => {
         p.x += p.vx;
         p.y += p.vy;
         
-        // 碰到邊界反彈
+        // 邊界反彈
         if(p.x < 0 || p.x > width) p.vx *= -1;
         if(p.y < 0 || p.y > height) p.vy *= -1;
         
@@ -373,22 +395,41 @@
         ctx.fill();
       });
 
-      // 2. 新增：計算距離並畫出流動的連線
+      // 2. 計算距離，畫出科技網狀連線
       for (let i = 0; i < particles.length; i++) {
         for (let j = i + 1; j < particles.length; j++) {
           const dx = particles[i].x - particles[j].x;
           const dy = particles[i].y - particles[j].y;
           const distance = Math.sqrt(dx * dx + dy * dy);
           
-          // 當兩個點的距離小於 120 像素時，牽引出線條
-          if (distance < 120) {
+          // 點與點之間的連線距離放寬到 150
+          if (distance < 150) {
             ctx.beginPath();
             ctx.moveTo(particles[i].x, particles[i].y);
             ctx.lineTo(particles[j].x, particles[j].y);
-            // 距離越近，線條透明度越高（越亮）
-            const lineOpacity = (120 - distance) / 120 * 0.4;
-            ctx.strokeStyle = `rgba(56, 189, 248, ${lineOpacity})`;
+            // 距離越近，線條越不透明
+            const lineOpacity = 1 - (distance / 150);
+            // 控制連線透明度，最高 0.2 避免畫面太亂
+            ctx.strokeStyle = `rgba(56, 189, 248, ${lineOpacity * 0.2})`;
             ctx.lineWidth = 1;
+            ctx.stroke();
+          }
+        }
+
+        // 3. 滑鼠引力連線：計算每個點與滑鼠的距離
+        if (mouse.x != null && mouse.y != null) {
+          const dxMouse = particles[i].x - mouse.x;
+          const dyMouse = particles[i].y - mouse.y;
+          const distanceMouse = Math.sqrt(dxMouse * dxMouse + dyMouse * dyMouse);
+          
+          if (distanceMouse < mouse.radius) {
+            ctx.beginPath();
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(mouse.x, mouse.y);
+            const mouseLineOpacity = 1 - (distanceMouse / mouse.radius);
+            // 滑鼠連線稍微亮一點
+            ctx.strokeStyle = `rgba(56, 189, 248, ${mouseLineOpacity * 0.4})`;
+            ctx.lineWidth = 1.5;
             ctx.stroke();
           }
         }
@@ -401,7 +442,7 @@
     initCanvas();
     drawParticles();
 
-    // ===== 2. 滾動淡入動畫 (Intersection Observer) =====
+    // ===== 滾動淡入動畫保持不變 =====
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
