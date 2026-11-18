@@ -28,8 +28,8 @@
       background-color: var(--bg-color);
       color: var(--text-main);
       overflow-x: hidden;
+      scroll-padding-top: 80px; /* 新增這行：預留頂部導覽列的空間 */
     }
-
     body { position: relative; }
 
     /* ===== 背景 Canvas ===== */
@@ -169,8 +169,8 @@
     }
     .bento-item:hover {
       transform: translateY(-5px);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-      border-color: rgba(255, 255, 255, 0.2);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), 0 0 15px rgba(56, 189, 248, 0.2); /* 增加青藍色光暈 */
+      border-color: rgba(56, 189, 248, 0.5); /* 邊框變色 */
     }
     .bento-item h3 { font-size: 1.4rem; margin-bottom: 15px; color: var(--text-main); }
     .bento-item p { color: var(--text-muted); line-height: 1.6; }
@@ -200,6 +200,13 @@
     .btn:hover {
       transform: scale(1.05);
       box-shadow: 0 0 15px var(--accent-glow);
+    }
+    
+    /* 新增按鈕點擊瞬間的下壓效果 */
+    .btn:active {
+      transform: scale(0.95);
+      box-shadow: 0 0 5px var(--accent);
+      background: #0ea5e9; /* 點擊時顏色微調 */
     }
 
     /* ===== 滾動動畫 (Intersection Observer用) ===== */
@@ -350,11 +357,13 @@
 
     function drawParticles() {
       ctx.clearRect(0, 0, width, height);
+      
+      // 1. 更新並畫出每個漂浮點
       particles.forEach(p => {
         p.x += p.vx;
         p.y += p.vy;
         
-        // 邊界反彈
+        // 碰到邊界反彈
         if(p.x < 0 || p.x > width) p.vx *= -1;
         if(p.y < 0 || p.y > height) p.vy *= -1;
         
@@ -363,6 +372,28 @@
         ctx.fillStyle = `rgba(56, 189, 248, ${p.opacity})`;
         ctx.fill();
       });
+
+      // 2. 新增：計算距離並畫出流動的連線
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+          
+          // 當兩個點的距離小於 120 像素時，牽引出線條
+          if (distance < 120) {
+            ctx.beginPath();
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            // 距離越近，線條透明度越高（越亮）
+            const lineOpacity = (120 - distance) / 120 * 0.4;
+            ctx.strokeStyle = `rgba(56, 189, 248, ${lineOpacity})`;
+            ctx.lineWidth = 1;
+            ctx.stroke();
+          }
+        }
+      }
+      
       requestAnimationFrame(drawParticles);
     }
     
